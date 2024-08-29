@@ -1,1 +1,4 @@
-<h> Nuh! its totally free. no paying </h>
+
+![gojo](https://github.com/kainatquaderee/miku/blob/main/gojo.jpg)
+
+# Nuh! its totally free. no paying
