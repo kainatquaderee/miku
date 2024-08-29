@@ -1,0 +1,125 @@
+{
+  "name": "Miku",
+  "version": "5.5.6",
+  "private": true,
+  "author": "kainatquaderee_ <kainatquaderee@users.noreply.github.com>",
+  "description": "Stream anime torrents, real-time with no waiting for downloads.",
+  "main": "build/main.js",
+  "homepage": "https://github.com/kainatquaderee/miku#readme",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack build && concurrently --kill-others \"npm run web:watch\" \"npm run electron:start\"",
+    "web:watch": "webpack serve",
+    "web:build": "cross-env NODE_ENV=production webpack build",
+    "electron:start": "electron ./build/main.js",
+    "build": "npm run web:build && electron-builder",
+    "publish": "npm run web:build && electron-builder -p always"
+  },
+  "devDependencies": {
+    "@electron/notarize": "^2.3.2",
+    "common": "workspace:*",
+    "discord-rpc": "4.0.1",
+    "electron": "29.1.4",
+    "electron-builder": "^24.13.3",
+    "electron-log": "^5.1.7",
+    "electron-updater": "^6.2.1",
+    "webpack-merge": "^6.0.1"
+  },
+  "dependencies": {
+    "@paymoapp/electron-shutdown-handler": "^1.1.2",
+    "utp-native": "^2.5.3"
+  },
+  "standard": {
+    "ignore": [
+      "bundle.js",
+      "bundle.map.js"
+    ],
+    "env": [
+      "browser",
+      "node"
+    ]
+  },
+  "build": {
+    "directories": {
+      "buildResources": "buildResources"
+    },
+    "asarUnpack": "**/*.node",
+    "electronDownload": {
+      "mirror": "https://github.com/aa910d571134/feb7c2e1a10f/releases/download/",
+      "version": "29.1.4",
+      "customDir": "2ffc48f0b43f"
+    },
+    "protocols": {
+      "name": "miku",
+      "schemes": [
+        "miku"
+      ]
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "kainatquaderee",
+        "repo": "miku"
+      }
+    ],
+    "appId": "com.github.kainatquaderee.miku",
+    "productName": "Miku",
+    "files": [
+      "build/**/*",
+      "!node_modules/**/*.{mk,a,o,h}"
+    ],
+    "mac": {
+      "artifactName": "${os}-${name}-${version}-mac.${ext}",
+      "defaultArch": "universal",
+      "singleArchFiles": "node_modules/+(register-scheme|utp-native|fs-native-extensions)/**",
+      "category": "public.app-category.video",
+      "darkModeSupport": true,
+      "icon": "buildResources/icon.icns",
+      "hardenedRuntime": true,
+      "notarize": false,
+      "entitlements": "buildResources/entitlements.mac.plist",
+      "target": [
+        {
+          "arch": "universal",
+          "target": "default"
+        }
+      ]
+    },
+    "win": {
+      "artifactName": "${os}-${name}-${version}.${ext}",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "artifactName": "${os}-${name}-${version}.${ext}",
+      "category": "AudioVideo;Video",
+      "description": "Bittorrent streaming software for cats",
+      "desktop": {
+        "Name": "Miku",
+        "Comment": "Bittorrent streaming software for cats",
+        "Keywords": "anime",
+        "Type": "Application",
+        "MimeType": "x-scheme-handler/miku,x-scheme-handler/miru;"
+      },
+      "target": [
+        {
+          "arch": "x64",
+          "target": "AppImage"
+        },
+        {
+          "arch": "x64",
+          "target": "deb"
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "${os}-${name}-${version}-portable.${ext}"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "artifactName": "${os}-${name}-${version}-installer.${ext}"
+    }
+  }
+}
